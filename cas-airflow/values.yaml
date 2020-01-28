@@ -1,0 +1,33 @@
+airflow:
+  airflow:
+    image:
+      repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
+      tag: 0.0.1
+    extraVolumeMounts:
+      - name: cas-airflow-home
+        mountPath: /usr/local/airflow
+    extraVolumes:
+      - name: cas-airflow-home
+        persistentVolumeClaim:
+          claimName: cas-airflow-home
+    extraEnv:
+      - name: C_FORCE_ROOT
+        value: 'true'
+  postgresql:
+    enabled: true
+    postgresDatabase: postgres
+  redis:
+    enabled: true
+    image:
+      registry: registry.redhat.io
+      repository: rhscl/redis-5-rhel7
+      tag: 5-18.1575996553
+    securityContext:
+      enabled: false
+    master:
+      command: []
+      livenessProbe:
+        enabled: false
+      readinessProbe:
+        enabled: false
+
