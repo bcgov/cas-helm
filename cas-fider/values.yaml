@@ -1,0 +1,8 @@
+
+fider:
+  image:
+    repository: docker-registry.default.svc:5000/wksv3k-tools/fider-notls
+    tag: latest
+  postgresql:
+    enabled: true
+    postgresDatabase: postgres

@@ -1,0 +1,19 @@
+apiVersion: v2
+name: fider
+appVersion: 0.18.0.notls
+description: Fider is an open platform to collect an prioritize product feedback
+home: https://getfider.com/
+icon: https://getfider.com/images/logo-100x100.png
+type: application
+maintainers:
+  - email: matthieu@button.is
+    name: Matthieu Foucault
+sources:
+  - https://github.com/bcgov/cas-helm
+  - https://github.com/garywong-bc/nrm-fider
+version: 0.0.1
+dependencies:
+  - name: postgresql
+    version: 0.13.1-p3
+    repository: "file://../postgresql"
+    condition: postgresql.enabled
