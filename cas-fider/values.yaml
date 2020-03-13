@@ -3,6 +3,10 @@ fider:
   image:
     repository: docker-registry.default.svc:5000/wksv3k-tools/fider-notls
     tag: latest
+  email:
+    host: apps.smtp.gov.bc.ca
+    port: 25
+    noreply: cas-no-reply@gov.bc.ca
   postgresql:
     enabled: true
     postgresDatabase: postgres

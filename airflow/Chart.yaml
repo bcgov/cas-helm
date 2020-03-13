@@ -16,7 +16,7 @@ sources:
 version: 5.2.5-p3
 dependencies:
   - name: postgresql
-    version: 0.13.1-p3
+    version: 0.13.1-p4
     repository: "file://../postgresql"
     condition: postgresql.enabled
   - name: redis

@@ -14,6 +14,6 @@ sources:
 version: 0.0.1
 dependencies:
   - name: postgresql
-    version: 0.13.1-p3
+    version: 0.13.1-p4
     repository: "file://../postgresql"
     condition: postgresql.enabled
