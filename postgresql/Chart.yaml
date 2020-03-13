@@ -17,4 +17,4 @@ name: postgresql
 sources:
   - https://github.com/bcgov/cas-helm
   - https://github.com/sclorg/postgresql-container
-version: 0.13.1-p3
+version: 0.13.1-p4
