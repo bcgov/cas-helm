@@ -9,7 +9,7 @@ fider:
     noreply: cas-no-reply@gov.bc.ca
   host:
     clusterDomain: pathfinder.gov.bc.ca
-    prefix: feedback.ciip-portal
+    prefix: ciip-portal-feedback
   postgresql:
     enabled: true
     postgresDatabase: postgres
