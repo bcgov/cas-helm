@@ -7,6 +7,9 @@ fider:
     host: apps.smtp.gov.bc.ca
     port: 25
     noreply: cas-no-reply@gov.bc.ca
+  host:
+    clusterDomain: pathfinder.gov.bc.ca
+    prefix: feedback.ciip-portal
   postgresql:
     enabled: true
     postgresDatabase: postgres
