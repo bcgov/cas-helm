@@ -1,0 +1,6 @@
+dependencies:
+- name: fider
+  repository: file://../fider
+  version: 0.0.1
+digest: sha256:8d39e85ce659f6ac2b4a9325bbf47f05102f272b2b5c12fa1fe368584b6c1c11
+generated: "2020-03-12T13:19:38.977961397-07:00"

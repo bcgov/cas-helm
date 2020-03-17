@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fider.fullname" . }}
+  labels:
+    {{- include "fider.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    # Smooth rolling update of the Web UI
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      {{- include "fider.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fider.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "fider.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "fider.fullname" . }}-jwt-secret
+                  key: jwt-secret
+            - name: POSTGRESQL_USERNAME
+              value: {{ .Values.postgresql.postgresUser | quote }}
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ default (include "fider.postgresql.fullname" .) .Values.postgresql.existingSecret }}
+                  key: {{ .Values.postgresql.existingSecretKey }}
+            - name: POSTGRESQL_DB_NAME
+              value: {{ .Values.postgresql.postgresDatabase  | quote }}
+            - name: POSTGRESQL_DB_HOST
+              value: {{ include "fider.postgresql.fullname" . }}
+            - name: POSTGRESQL_PORT
+              value: {{ .Values.postgresql.service.port | quote }}
+            - name: DATABASE_URL
+              value: postgres://$(POSTGRESQL_USERNAME):$(POSTGRESQL_PASSWORD)@$(POSTGRESQL_DB_HOST):$(POSTGRESQL_PORT)/$(POSTGRESQL_DB_NAME)?sslmode=disable
+            - name: EMAIL_NOREPLY
+              value: {{ .Values.email.noreply | quote }}
+            - name: EMAIL_SMTP_HOST
+              value: {{ .Values.email.host | quote }}
+            - name: EMAIL_SMTP_PORT
+              value: {{ .Values.email.port | quote }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
