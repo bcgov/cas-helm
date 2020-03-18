@@ -1,0 +1,7 @@
+## Persist data to a persistent volume
+persistence:
+  enabled: true
+  storageClass: netapp-block-standard
+
+nasgateway:
+  enabled: true
