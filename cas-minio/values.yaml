@@ -1,0 +1,21 @@
+## Persist data to a persistent volume
+persistence:
+  enabled: true
+  storageClass: netapp-block-standard
+
+nasgateway:
+  enabled: true
+
+# S3 Configuration
+# s3gateway:
+#   enabled: true
+#   serviceEndpoint: "<INSERT ENDPOINT>"
+
+# Create a bucket automatically on install
+# defaultBucket:
+#   enabled: true
+#   name: "<NAME>"
+#   purge: false
+
+# List of buckets to create on install
+# bucket: []

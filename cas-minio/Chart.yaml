@@ -1,0 +1,17 @@
+apiVersion: v2
+appVersion: 0.0.1
+name: cas-minio
+version: 0.0.1
+description: MinIO is a high performance data infrastructure for machine learning, analytics and application data workloads.
+  workflows
+home: https://min.io
+icon: https://min.io/resources/img/logo/MINIO_wordmark.png
+sources:
+  - https://github.com/bcgov/cas-helm
+maintainers:
+  - email: dylan@button.is
+    name: Dylan Leard
+dependencies:
+  - name: minio
+    version: 5.0.17
+    repository: "file://../minio"
