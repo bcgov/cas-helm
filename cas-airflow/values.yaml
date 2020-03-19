@@ -2,7 +2,7 @@ airflow:
   airflow:
     image:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      tag: 0.0.1
+      tag: 'latest'
     extraVolumeMounts:
       - name: cas-airflow-home
         mountPath: /usr/local/airflow
