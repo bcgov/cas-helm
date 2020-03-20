@@ -81,7 +81,12 @@ RUN chown -R airflow: ${AIRFLOW_USER_HOME}
 
 EXPOSE 8080 5555 8793
 
-USER airflow
-WORKDIR ${AIRFLOW_USER_HOME}
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["webserver"]
+LABEL io.openshift.s2i.assemble-user="1000"
+USER root
+COPY root/entrypoint.sh /entrypoint.sh
+COPY root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
+RUN test "$(id airflow)" = "uid=1000(airflow) gid=1000(airflow) groups=1000(airflow)" && \
+    chmod g=u /etc/passwd && \
+    usermod -a -G root airflow && \
+    /usr/libexec/fix-permissions /usr/local/airflow
+USER 1000
