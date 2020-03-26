@@ -7,6 +7,8 @@
 FROM puckel/docker-airflow:1.10.4
 LABEL io.openshift.s2i.assemble-user="1000"
 USER root
+COPY root/usr/local/airflow/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
+COPY root/usr/local/airflow/custom ${AIRFLOW_USER_HOME}/custom
 COPY root/entrypoint.sh /entrypoint.sh
 COPY root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
 RUN test "$(id airflow)" = "uid=1000(airflow) gid=1000(airflow) groups=1000(airflow)" && \

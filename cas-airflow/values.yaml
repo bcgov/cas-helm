@@ -5,7 +5,7 @@ airflow:
       tag: '0.1.0-pre.2'
     extraVolumeMounts:
       - name: cas-airflow-home
-        mountPath: /usr/local/airflow
+        mountPath: /usr/local/airflow/dags
     extraVolumes:
       - name: cas-airflow-home
         persistentVolumeClaim:
