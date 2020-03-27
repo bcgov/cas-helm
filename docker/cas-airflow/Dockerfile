@@ -5,6 +5,9 @@
 # see https://registry-console-default.pathfinder.gov.bc.ca/registry#/images/wksv3k-tools/cas-airflow
 
 FROM puckel/docker-airflow:1.10.4
+RUN set -ex \
+    && apt-get install python-lxml -yqq \
+    && pip install lxml
 LABEL io.openshift.s2i.assemble-user="1000"
 USER root
 COPY root/usr/local/airflow/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
