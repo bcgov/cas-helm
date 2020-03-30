@@ -32,7 +32,7 @@ ELASTICSEARCH_LOG_ID_TEMPLATE = conf.get('elasticsearch', 'LOG_ID_TEMPLATE')
 
 ELASTICSEARCH_END_OF_LOG_MARK = conf.get('elasticsearch', 'END_OF_LOG_MARK')
 
-ELASTICSEARCH_WRITE_STDOUT = True
+ELASTICSEARCH_WRITE_STDOUT = ('elasticsearch', 'WRITE_STDOUT')
 
 ELASTICSEARCH_JSON_FORMAT = conf.get('elasticsearch', 'JSON_FORMAT')
 
@@ -92,12 +92,12 @@ LOGGING_CONFIG = {
     },
     'loggers': {
         'airflow.task': {
-            'handlers': ['elasticsearch.task'],
+            'handlers': ['elasticsearch'],
             'level': LOG_LEVEL,
             'propagate': False,
         },
         'airflow.task_runner': {
-            'handlers': ['elasticsearch.task'],
+            'handlers': ['elasticsearch'],
             'level': LOG_LEVEL,
             'propagate': True,
         },

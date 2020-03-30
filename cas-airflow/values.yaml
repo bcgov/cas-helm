@@ -2,7 +2,7 @@ airflow:
   airflow:
     image:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      tag: '0.1.0-pre.010'
+      tag: '0.1.0-pre.011'
     extraVolumeMounts:
       - name: cas-airflow-home
         mountPath: /usr/local/airflow/dags
