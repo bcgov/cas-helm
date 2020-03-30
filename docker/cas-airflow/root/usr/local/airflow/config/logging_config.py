@@ -57,47 +57,16 @@ LOGGING_CONFIG = {
             'formatter': 'airflow.task',
             'base_log_folder': os.path.expanduser(BASE_LOG_FOLDER),
             'filename_template': FILENAME_TEMPLATE,
-        },
-        'elasticsearch': {
-            'task': {
-                'class': 'airflow.utils.log.es_task_handler.ElasticsearchTaskHandler',
-                'formatter': 'airflow',
-                'base_log_folder': os.path.expanduser(BASE_LOG_FOLDER),
-                'log_id_template': ELASTICSEARCH_LOG_ID_TEMPLATE,
-                'filename_template': FILENAME_TEMPLATE,
-                'end_of_log_mark': ELASTICSEARCH_END_OF_LOG_MARK,
-                'host': ELASTICSEARCH_HOST,
-                'write_stdout': ELASTICSEARCH_WRITE_STDOUT,
-                'json_format': ELASTICSEARCH_JSON_FORMAT,
-                'json_fields': ELASTICSEARCH_JSON_FIELDS
-            },
-        },
-        # When using s3 or gcs, provide a customized LOGGING_CONFIG
-        # in airflow_local_settings within your PYTHONPATH, see UPDATING.md
-        # for details
-        # 's3.task': {
-        #     'class': 'airflow.utils.log.s3_task_handler.S3TaskHandler',
-        #     'formatter': 'airflow.task',
-        #     'base_log_folder': os.path.expanduser(BASE_LOG_FOLDER),
-        #     's3_log_folder': S3_LOG_FOLDER,
-        #     'filename_template': FILENAME_TEMPLATE,
-        # },
-        # 'gcs.task': {
-        #     'class': 'airflow.utils.log.gcs_task_handler.GCSTaskHandler',
-        #     'formatter': 'airflow.task',
-        #     'base_log_folder': os.path.expanduser(BASE_LOG_FOLDER),
-        #     'gcs_log_folder': GCS_LOG_FOLDER,
-        #     'filename_template': FILENAME_TEMPLATE,
-        # },
+        }
     },
     'loggers': {
         'airflow.task': {
-            'handlers': ['elasticsearch'],
+            'handlers': ['file.task'],
             'level': LOG_LEVEL,
             'propagate': False,
         },
         'airflow.task_runner': {
-            'handlers': ['elasticsearch'],
+            'handlers': ['file.task'],
             'level': LOG_LEVEL,
             'propagate': True,
         },
@@ -109,4 +78,44 @@ LOGGING_CONFIG = {
     }
 }
 
-## SET ALL logger handlers to 'console' ##
+REMOTE_LOGGING: bool = conf.getboolean('logging', 'remote_logging')
+
+if REMOTE_LOGGING:
+
+    ELASTICSEARCH_HOST: str = conf.get('elasticsearch', 'HOST')
+
+    # Storage bucket URL for remote logging
+    # S3 buckets should start with "s3://"
+    # Cloudwatch log groups should start with "cloudwatch://"
+    # GCS buckets should start with "gs://"
+    # WASB buckets should start with "wasb"
+    # just to help Airflow select correct handler
+    REMOTE_BASE_LOG_FOLDER: str = conf.get('logging', 'REMOTE_BASE_LOG_FOLDER')
+
+    ELASTICSEARCH_LOG_ID_TEMPLATE: str = conf.get('elasticsearch', 'LOG_ID_TEMPLATE')
+    ELASTICSEARCH_END_OF_LOG_MARK: str = conf.get('elasticsearch', 'END_OF_LOG_MARK')
+    ELASTICSEARCH_WRITE_STDOUT: bool = conf.getboolean('elasticsearch', 'WRITE_STDOUT')
+    ELASTICSEARCH_JSON_FORMAT: bool = conf.getboolean('elasticsearch', 'JSON_FORMAT')
+    ELASTICSEARCH_JSON_FIELDS: str = conf.get('elasticsearch', 'JSON_FIELDS')
+
+    ELASTIC_REMOTE_HANDLERS: Dict[str, Dict[str, Union[str, bool]]] = {
+        'task': {
+            'class': 'airflow.utils.log.es_task_handler.ElasticsearchTaskHandler',
+            'formatter': 'airflow',
+            'base_log_folder': str(os.path.expanduser(BASE_LOG_FOLDER)),
+            'log_id_template': ELASTICSEARCH_LOG_ID_TEMPLATE,
+            'filename_template': FILENAME_TEMPLATE,
+            'end_of_log_mark': ELASTICSEARCH_END_OF_LOG_MARK,
+            'host': ELASTICSEARCH_HOST,
+            'write_stdout': ELASTICSEARCH_WRITE_STDOUT,
+            'json_format': ELASTICSEARCH_JSON_FORMAT,
+            'json_fields': ELASTICSEARCH_JSON_FIELDS
+        },
+    }
+
+    LOGGING_CONFIG['handlers'].update(ELASTIC_REMOTE_HANDLERS)
+    else:
+        raise AirflowException(
+            "Incorrect remote log configuration. Please check the configuration of option 'host' in "
+            "section 'elasticsearch' if you are using Elasticsearch. In the other case, "
+            "'remote_base_log_folder' option in 'core' section.")
