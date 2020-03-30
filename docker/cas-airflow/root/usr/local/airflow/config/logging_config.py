@@ -26,6 +26,18 @@ BASE_LOG_FOLDER = conf.get('core', 'BASE_LOG_FOLDER')
 
 FILENAME_TEMPLATE = '{{ ti.dag_id }}/{{ ti.task_id }}/{{ ts }}/{{ try_number }}.log'
 
+ELASTICSEARCH_HOST = conf.get('elasticsearch', 'HOST')
+
+ELASTICSEARCH_LOG_ID_TEMPLATE = conf.get('elasticsearch', 'LOG_ID_TEMPLATE')
+
+ELASTICSEARCH_END_OF_LOG_MARK = conf.get('elasticsearch', 'END_OF_LOG_MARK')
+
+ELASTICSEARCH_WRITE_STDOUT = true
+
+ELASTICSEARCH_JSON_FORMAT = conf.get('elasticsearch', 'JSON_FORMAT')
+
+ELASTICSEARCH_JSON_FIELDS = conf.get('elasticsearch', 'JSON_FIELDS')
+
 LOGGING_CONFIG = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -45,7 +57,21 @@ LOGGING_CONFIG = {
             'formatter': 'airflow.task',
             'base_log_folder': os.path.expanduser(BASE_LOG_FOLDER),
             'filename_template': FILENAME_TEMPLATE,
-        }
+        },
+        'elasticsearch': {
+            'task': {
+                'class': 'airflow.utils.log.es_task_handler.ElasticsearchTaskHandler',
+                'formatter': 'airflow',
+                'base_log_folder': os.path.expanduser(BASE_LOG_FOLDER),
+                'log_id_template': ELASTICSEARCH_LOG_ID_TEMPLATE,
+                'filename_template': FILENAME_TEMPLATE,
+                'end_of_log_mark': ELASTICSEARCH_END_OF_LOG_MARK,
+                'host': ELASTICSEARCH_HOST,
+                'write_stdout': ELASTICSEARCH_WRITE_STDOUT,
+                'json_format': ELASTICSEARCH_JSON_FORMAT,
+                'json_fields': ELASTICSEARCH_JSON_FIELDS
+            },
+        },
         # When using s3 or gcs, provide a customized LOGGING_CONFIG
         # in airflow_local_settings within your PYTHONPATH, see UPDATING.md
         # for details
@@ -66,12 +92,12 @@ LOGGING_CONFIG = {
     },
     'loggers': {
         'airflow.task': {
-            'handlers': ['console'],
+            'handlers': ['elasticsearch.task'],
             'level': LOG_LEVEL,
             'propagate': False,
         },
         'airflow.task_runner': {
-            'handlers': ['console'],
+            'handlers': ['elasticsearch.task'],
             'level': LOG_LEVEL,
             'propagate': True,
         },
