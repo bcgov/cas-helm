@@ -9,6 +9,9 @@ FROM puckel/docker-airflow:1.10.4
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
 
+ARG AIRFLOW_USER_HOME=/usr/local/airflow
+ENV AIRFLOW_HOME=${AIRFLOW_USER_HOME}
+
 LABEL io.openshift.s2i.assemble-user="1000"
 USER root
 RUN set -ex \
