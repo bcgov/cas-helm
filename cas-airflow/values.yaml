@@ -3,6 +3,12 @@ airflow:
     image:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
       tag: '0.1.0-pre.014'
+    config:
+      AIRFLOW__CORE__REMOTE_LOGGING: True
+      AIRFLOW__ELASTICSEARCH__HOST: 'airflow'
+      AIRFLOW__ELASTICSEARCH__LOG_ID_TEMPLATE: '{{dag_id}}-{{task_id}}-{{execution_date}}-{{try_number}}'
+      AIRFLOW__ELASTICSEARCH__END_OF_LOG_MARK: 'end_of_log'
+      AIRFLOW__ELASTICSEARCH__WRITE_STDOUT: 'true'
     extraVolumeMounts:
       - name: cas-airflow-home
         mountPath: /usr/local/airflow
@@ -12,16 +18,6 @@ airflow:
           claimName: cas-airflow-home
     extraEnv:
       - name: C_FORCE_ROOT
-        value: 'true'
-      - name: AIRFLOW_CORE_REMOTE_LOGGING
-        value: 'true'
-      - name: AIRFLOW_ELASTICSEARCH_HOST
-        value: 'airflow'
-      - name: AIRFLOW_ELASTICSEARCH_LOG_ID_TEMPLATE
-        value: '{{dag_id}}-{{task_id}}-{{execution_date}}-{{try_number}}'
-      - name: AIRFLOW_ELASTICSEARCH_END_OF_LOG_MARK
-        value: 'end_of_log'
-      - name: AIRFLOW_ELASTICSEARCH_WRITE_STDOUT
         value: 'true'
   postgresql:
     enabled: true
