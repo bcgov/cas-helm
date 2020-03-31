@@ -14,7 +14,6 @@ RUN set -ex \
     && apt-get update -yqq \
     && apt-get upgrade -yqq \
     && apt-get install python-lxml -yqq \
-    && apt-get install elasticsearch -yqq \
     && pip install lxml \
     && pip install elasticsearch
 COPY root/entrypoint.sh /entrypoint.sh
