@@ -2,7 +2,7 @@ airflow:
   airflow:
     image:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      tag: '0.1.0-pre.014'
+      tag: '0.1.0-pre.017'
     config:
       AIRFLOW__CORE__REMOTE_LOGGING: True
       AIRFLOW__ELASTICSEARCH__HOST: 'airflow'
