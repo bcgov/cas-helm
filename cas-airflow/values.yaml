@@ -17,6 +17,11 @@ airflow:
         persistentVolumeClaim:
           claimName: cas-airflow-home
     extraEnv:
+      - name: AIRFLOW__CORE__FERNET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: cas-airflow
+            key: fernet_key
       - name: C_FORCE_ROOT
         value: 'true'
   postgresql:
