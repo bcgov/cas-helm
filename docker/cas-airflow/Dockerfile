@@ -15,8 +15,7 @@ RUN set -ex \
     && apt-get upgrade -yqq \
     && apt-get install python-lxml -yqq \
     && pip install lxml \
-    && pip install elasticsearch \
-    && pip install elasticsearch-dsl
+    && pip install 'apache-airflow[gcp]'
 COPY root/entrypoint.sh /entrypoint.sh
 COPY root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
 RUN test "$(id airflow)" = "uid=1000(airflow) gid=1000(airflow) groups=1000(airflow)" && \
