@@ -2,22 +2,25 @@ airflow:
   airflow:
     image:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      tag: '0.1.0-pre.025'
+      tag: '0.1.0-pre.026'
+    executor: Kubernetes
     config:
       AIRFLOW__CORE__REMOTE_LOGGING: True
       AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-dev-app1/airflow/logs
-      AIRFLOW__CORE__REMOTE_LOG_CONN_ID:
-        valueFrom:
-          secretKeyRef:
-            name: gcp-wksv3k-dev-app1-service-account-key
-            key: credentials.json
+      AIRFLOW__CORE__REMOTE_LOG_CONN_ID: gcp_logs
     extraVolumeMounts:
       - name: cas-airflow-home
         mountPath: /usr/local/airflow
+      - name: cas-airflow-secret-volume
+        mountPath: /usr/local/etc/secrets/gcp-wksv3k-tools-app1-service-account-key
+        readOnly: true
     extraVolumes:
-      - name: cas-airflow-home
+      - name: cas-airflow-secret-volume
         persistentVolumeClaim:
-          claimName: cas-airflow-home
+          claimName: cas-airflow-secret-volume
+      - name: secret-volume
+        secret:
+          secretName: gcp-wksv3k-tools-app1-service-account-key
     extraEnv:
       - name: AIRFLOW__CORE__FERNET_KEY
         valueFrom:
