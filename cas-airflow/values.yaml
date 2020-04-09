@@ -2,7 +2,7 @@ airflow:
   airflow:
     image:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      tag: '0.1.0-pre.026'
+      tag: '0.1.0-pre.027'
     executor: Kubernetes
     config:
       AIRFLOW__CORE__REMOTE_LOGGING: True
