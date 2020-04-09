@@ -15,10 +15,12 @@ airflow:
         mountPath: /usr/local/etc/secrets/gcp-wksv3k-tools-app1-service-account-key
         readOnly: true
     extraVolumes:
+      - name: cas-airflow-home
+        persistentVolumeClaim:
+          claimName: cas-airflow-home
       - name: cas-airflow-secret-volume
         persistentVolumeClaim:
           claimName: cas-airflow-secret-volume
-      - name: secret-volume
         secret:
           secretName: gcp-wksv3k-tools-app1-service-account-key
     extraEnv:
