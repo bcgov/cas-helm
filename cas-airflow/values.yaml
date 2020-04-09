@@ -19,8 +19,6 @@ airflow:
         persistentVolumeClaim:
           claimName: cas-airflow-home
       - name: cas-airflow-secret-volume
-        persistentVolumeClaim:
-          claimName: cas-airflow-secret-volume
         secret:
           secretName: gcp-wksv3k-tools-app1-service-account-key
     extraEnv:
