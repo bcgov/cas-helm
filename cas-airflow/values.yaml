@@ -12,9 +12,12 @@ airflow:
       # AIRFLOW__KUBERNETES__GIT_BRANCH: feature/test-kubernetes
       # AIRFLOW__KUBERNETES__GIT_DAGS_FOLDER_MOUNT_POINT: dags
       AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM: cas-airflow-home
-      AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH: /dags
+      AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH: dags
       AIRFLOW__KUBERNETES__NAMESPACE: wksv3k-tools
       AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME: cas-airflow
+      AIRFLOW__KUBERNETES__IN_CLUSTER: True
+      AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
+      AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: 0.1.0-pre.025
     extraVolumeMounts:
       - name: cas-airflow-home
         mountPath: /usr/local/airflow
