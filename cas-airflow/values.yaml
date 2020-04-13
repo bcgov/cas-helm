@@ -14,6 +14,7 @@ airflow:
       AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM: cas-airflow-home
       AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH: /dags
       AIRFLOW__KUBERNETES__NAMESPACE: wksv3k-tools
+      AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME: cas-airflow
     extraVolumeMounts:
       - name: cas-airflow-home
         mountPath: /usr/local/airflow
