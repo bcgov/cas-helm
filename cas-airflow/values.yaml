@@ -21,12 +21,6 @@ airflow:
       AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: apache/airflow
       AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: master-python3.7-ci
     extraVolumeMounts:
-      - name: cas-airflow-logs
-        mountPath: /usr/local/airflow/logs
-        subpath: logs
-      - name: cas-airflow-dags
-        mountPath: /usr/local/airflow/dags
-        subpath: dags
       - name: cas-airflow-secret-volume
         mountPath: /usr/local/etc/secrets/gcp-wksv3k-tools-app1-service-account-key
         readOnly: true
