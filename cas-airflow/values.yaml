@@ -4,6 +4,16 @@ airflow:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
       tag: '0.1.0-pre.029'
     executor: Kubernetes
+    persistence:
+      enabled: true
+      storageClass: netapp-file-standard
+      accessMode: ReadWriteMany
+      size: 1Gi
+    logsPersistence:
+      enabled: true
+      storageClass: netapp-file-standard
+      accessMode: ReadWriteMany
+      size: 1Gi
     config:
       AIRFLOW__CORE__REMOTE_LOGGING: False
       AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-dev-app1/airflow/logs
@@ -25,12 +35,6 @@ airflow:
         mountPath: /usr/local/etc/secrets/gcp-wksv3k-tools-app1-service-account-key
         readOnly: true
     extraVolumes:
-      - name: cas-airflow-logs
-        persistentVolumeClaim:
-          claimName: cas-airflow-logs
-      - name: cas-airflow-dags
-        persistentVolumeClaim:
-          claimName: cas-airflow-dags
       - name: cas-airflow-secret-volume
         secret:
           secretName: gcp-wksv3k-tools-app1-service-account-key
