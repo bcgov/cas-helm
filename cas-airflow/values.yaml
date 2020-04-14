@@ -16,8 +16,8 @@ airflow:
       AIRFLOW__KUBERNETES__NAMESPACE: wksv3k-tools
       AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME: cas-airflow
       AIRFLOW__KUBERNETES__IN_CLUSTER: True
-      AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: 0.1.0-pre.029
+      AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: ubuntu
+      AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: 16:04
     extraVolumeMounts:
       - name: cas-airflow-home
         mountPath: /usr/local/airflow
