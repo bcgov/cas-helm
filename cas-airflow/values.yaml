@@ -51,18 +51,20 @@ airflow:
   postgresql:
     enabled: true
     postgresDatabase: postgres
+  workers:
+    enabled: false
   redis:
-    enabled: true
-    image:
-      registry: registry.redhat.io
-      repository: rhscl/redis-5-rhel7
-      tag: 5-18.1575996553
-    securityContext:
-      enabled: false
-    master:
-      command: []
-      livenessProbe:
-        enabled: false
-      readinessProbe:
-        enabled: false
+    enabled: false
+    # image:
+    #   registry: registry.redhat.io
+    #   repository: rhscl/redis-5-rhel7
+    #   tag: 5-18.1575996553
+    # securityContext:
+    #   enabled: false
+    # master:
+    #   command: []
+    #   livenessProbe:
+    #     enabled: false
+    #   readinessProbe:
+    #     enabled: false
 
