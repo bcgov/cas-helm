@@ -9,11 +9,15 @@ airflow:
       storageClass: netapp-file-standard
       accessMode: ReadWriteMany
       size: 1Gi
+      subPath: dags
+      mountPath: /usr/local/airflow/dags
     logsPersistence:
       enabled: true
       storageClass: netapp-file-standard
       accessMode: ReadWriteMany
       size: 1Gi
+      subPath: logs
+      mountPath: /usr/local/airflow/logs
     config:
       AIRFLOW__CORE__REMOTE_LOGGING: False
       AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-dev-app1/airflow/logs
