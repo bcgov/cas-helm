@@ -24,4 +24,5 @@ RUN test "$(id airflow)" = "uid=1000(airflow) gid=1000(airflow) groups=1000(airf
     usermod -a -G root airflow && \
     /usr/libexec/fix-permissions /usr/local/airflow
 USER 1000
+ENTRYPOINT ["/entrypoint.sh"]
 

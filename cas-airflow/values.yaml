@@ -1,16 +1,25 @@
 airflow:
+  web:
+    initialDelaySeconds: 60
+  dags:
+    git:
+      url: https://github.com/bcgov/cas-airflow-dags.git
+      ref: master
+    initContainer:
+      enabled: true
+      installRequirements: false
   airflow:
     image:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      tag: '0.1.0-pre.029'
+      tag: '0.1.0-pre.030'
     executor: Kubernetes
     config:
-      AIRFLOW__CORE__REMOTE_LOGGING: True
-      AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-dev-app1/airflow/logs
-      AIRFLOW__CORE__REMOTE_LOG_CONN_ID: gcs_logs
-      # AIRFLOW__KUBERNETES__GIT_REPO: https://github.com/bcgov/cas-airflow-dags
-      # AIRFLOW__KUBERNETES__GIT_BRANCH: feature/test-kubernetes
-      # AIRFLOW__KUBERNETES__GIT_DAGS_FOLDER_MOUNT_POINT: dags
+      # AIRFLOW__CORE__REMOTE_LOGGING: True
+      # AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-dev-app1/airflow/logs
+      # AIRFLOW__CORE__REMOTE_LOG_CONN_ID: gcs_logs
+      # AIRFLOW__KUBERNETES__GIT_REPO: https://github.com/bcgov/cas-airflow-dags.git
+      # AIRFLOW__KUBERNETES__GIT_BRANCH: master
+      # AIRFLOW__KUBERNETES__GIT_DAGS_FOLDER_MOUNT_POINT: /usr/local/airflow/dags
       AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM: cas-airflow-logs
       AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM: cas-airflow
       AIRFLOW__KUBERNETES__NAMESPACE: wksv3k-tools
