@@ -11,7 +11,7 @@ airflow:
   airflow:
     image:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      tag: '0.1.0-pre.030'
+      tag: '0.1.0-pre.033'
     executor: Kubernetes
     config:
       # AIRFLOW__CORE__REMOTE_LOGGING: True
@@ -20,21 +20,26 @@ airflow:
       # AIRFLOW__KUBERNETES__GIT_REPO: https://github.com/bcgov/cas-airflow-dags.git
       # AIRFLOW__KUBERNETES__GIT_BRANCH: master
       # AIRFLOW__KUBERNETES__GIT_DAGS_FOLDER_MOUNT_POINT: /usr/local/airflow/dags
+      # AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS: '{\"_request_timeout\":[300,300]}'
+      # see https://github.com/puckel/docker-airflow/issues/521
       AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM: cas-airflow-logs
       AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM: cas-airflow
       AIRFLOW__KUBERNETES__NAMESPACE: wksv3k-tools
       AIRFLOW__KUBERNETES__WORKER_SERVICE_ACCOUNT_NAME: cas-airflow
+      # AIRFLOW__KUBERNETES__WORKER_RUN_AS_USER: '1000880000'
+      # AIRFLOW__KUBERNETES__WORKER_FS_GROUP: '1000880000'
+      # see https://github.com/helm/helm/issues/1707
       AIRFLOW__KUBERNETES__IN_CLUSTER: True
       AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
-      AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: 0.1.0-pre.029
-      AIRFLOW__KUBERNETES__ENVIRONMENT_VARIABLES__AIRFLOW__CORE__REMOTE_LOGGING: True
-      AIRFLOW__KUBERNETES__ENVIRONMENT_VARIABLES__AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-dev-app1/airflow/logs
-      AIRFLOW__KUBERNETES__ENVIRONMENT_VARIABLES__AIRFLOW__CORE__REMOTE_LOG_CONN_ID: gcs_logs
-      AIRFLOW__KUBERNETES__ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: cas-airflow
-            key: fernet_key
+      AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: 0.1.0-pre.033
+      # AIRFLOW__KUBERNETES__ENVIRONMENT_VARIABLES__AIRFLOW__CORE__REMOTE_LOGGING: True
+      # AIRFLOW__KUBERNETES__ENVIRONMENT_VARIABLES__AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-dev-app1/airflow/logs
+      # AIRFLOW__KUBERNETES__ENVIRONMENT_VARIABLES__AIRFLOW__CORE__REMOTE_LOG_CONN_ID: gcs_logs
+      # AIRFLOW__KUBERNETES__ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY:
+      #   valueFrom:
+      #     secretKeyRef:
+      #       name: cas-airflow
+      #       key: fernet_key
     extraVolumeMounts:
       - name: cas-airflow-secret-volume
         mountPath: /usr/local/etc/secrets/gcp-wksv3k-tools-app1-service-account-key
@@ -51,6 +56,8 @@ airflow:
             key: fernet_key
       - name: C_FORCE_ROOT
         value: 'true'
+  flower:
+    enabled: false
   persistence:
       enabled: true
       storageClass: netapp-file-standard
