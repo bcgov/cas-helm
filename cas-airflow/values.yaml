@@ -17,10 +17,7 @@ airflow:
       AIRFLOW__CORE__REMOTE_LOGGING: True
       AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-tools-app1
       AIRFLOW__CORE__REMOTE_LOG_CONN_ID: gcs_logs
-      # AIRFLOW__KUBERNETES__GIT_REPO: https://github.com/bcgov/cas-airflow-dags.git
-      # AIRFLOW__KUBERNETES__GIT_BRANCH: master
-      # AIRFLOW__KUBERNETES__GIT_DAGS_FOLDER_MOUNT_POINT: /usr/local/airflow/dags
-      AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS: '{\"_request_timeout\":[300,300]}'
+      # AIRFLOW__KUBERNETES__KUBE_CLIENT_REQUEST_ARGS: '{\"_request_timeout\":[300,300]}'
       # see https://github.com/puckel/docker-airflow/issues/521
       AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM: cas-airflow-logs
       AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM: cas-airflow
@@ -75,16 +72,3 @@ airflow:
     enabled: false
   redis:
     enabled: false
-    # image:
-    #   registry: registry.redhat.io
-    #   repository: rhscl/redis-5-rhel7
-    #   tag: 5-18.1575996553
-    # securityContext:
-    #   enabled: false
-    # master:
-    #   command: []
-    #   livenessProbe:
-    #     enabled: false
-    #   readinessProbe:
-    #     enabled: false
-
