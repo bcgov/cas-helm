@@ -13,7 +13,14 @@ airflow:
       repository: docker-registry.default.svc:5000/wksv3k-tools/cas-airflow
       tag: '0.1.0-pre.033'
     executor: Kubernetes
+    # create placeholder connections and it requires manual setup
+    connections:
+      - id: gcs_logs
+        type: google_cloud_platform
+      - id: swrs_default
+        type: http
     config:
+      AIRFLOW__KUBERNETES__GIT_SUBPATH: dags
       AIRFLOW__CORE__REMOTE_LOGGING: True
       AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: gs://wksv3k-tools-app1
       AIRFLOW__CORE__REMOTE_LOG_CONN_ID: gcs_logs
@@ -53,6 +60,46 @@ airflow:
           secretKeyRef:
             name: cas-airflow
             key: fernet_key
+      - name: NAMESPACE
+        value: wksv3k-tools
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__NAMESPACE
+        value: wksv3k-tools
+      - name: SWRS_DEPTH
+        value: '2'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__SWRS_DEPTH
+        value: '2'
+      - name: SWRS_USER
+        value: '<swrs_user>'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__SWRS_USER
+        value: '<swrs_user>'
+      - name: SWRS_PASSWORD
+        value: '<swrs_password>'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__SWRS_PASSWORD
+        value: '<swrs_password>'
+      - name: SWRS_WEBSITE
+        value: '<swrs_website>'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__SWRS_WEBSITE
+        value: '<swrs_website>'
+      - name: SWRS_FILTER
+        value: '<swrs_filter>'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__SWRS_FILTER
+        value: '<swrs_filter>'
+      - name: MINIO_ACCESS_KEY
+        value: '<minio_access_key>'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MINIO_ACCESS_KEY
+        value: '<minio_access_key>'
+      - name: MINIO_SECRET_KEY
+        value: '<minio_secret_key>'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MINIO_SECRET_KEY
+        value: '<minio_secret_key>'
+      - name: MINIO_HOST
+        value: 'cas-minio-wksv3k-dev.pathfinder.gov.bc.ca'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__MINIO_HOST
+        value: 'cas-minio-wksv3k-dev.pathfinder.gov.bc.ca'
+      - name: STREAM_MINIO_IMAGE_TAG
+        value: '330712887fd255088cbca1472dae5810a8e83ee7'
+      - name: AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__STREAM_MINIO_IMAGE_TAG
+        value: '330712887fd255088cbca1472dae5810a8e83ee7'
   flower:
     enabled: false
   persistence:
