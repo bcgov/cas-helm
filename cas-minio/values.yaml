@@ -1,21 +1,15 @@
-## Persist data to a persistent volume
-persistence:
-  enabled: true
-  storageClass: netapp-block-standard
+minio:
+  persistence:
+    enabled: false
 
-nasgateway:
-  enabled: true
+  accessKey: '<access_key>'
+  secretKey: '<secret_key>'
 
-# S3 Configuration
-# s3gateway:
-#   enabled: true
-#   serviceEndpoint: "<INSERT ENDPOINT>"
-
-# Create a bucket automatically on install
-# defaultBucket:
-#   enabled: true
-#   name: "<NAME>"
-#   purge: false
-
-# List of buckets to create on install
-# bucket: []
+  gcsgateway:
+    enabled: true
+    # Number of parallel instances
+    replicas: 2
+    # credential json string of service account key
+    gcsKeyJson: '<gcs_key_json_string>'
+    # Google cloud project-id
+    projectId: "ggl-cas-storage"
