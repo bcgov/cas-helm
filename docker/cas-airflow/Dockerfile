@@ -74,7 +74,6 @@ RUN set -ex \
 COPY root /
 
 RUN useradd -ms /bin/bash -d ${AIRFLOW_HOME} --uid ${USER_ID} airflow
-RUN chown -R airflow: ${AIRFLOW_HOME}
 
 # This is very ugly. The three uids below as used in our dev, test and prod, respectively
 # The entrypoint is supposed to add the line in /etc/passwd as needed,
