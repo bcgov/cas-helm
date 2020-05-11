@@ -75,6 +75,14 @@ COPY root /
 
 RUN useradd -ms /bin/bash -d ${AIRFLOW_HOME} --uid ${USER_ID} airflow
 RUN chown -R airflow: ${AIRFLOW_HOME}
+
+# This is very ugly. The three uids below as used in our dev, test and prod, respectively
+# The entrypoint is supposed to add the line in /etc/passwd as needed,
+# but the kubernetes executor seems to override the entrypoint
+RUN echo "airflow:x:1009900000:1009900000::/usr/local/airflow:/sbin/nologin" >> /etc/passwd
+RUN echo "airflow:x:1009960000:1009960000::/usr/local/airflow:/sbin/nologin" >> /etc/passwd
+RUN echo "airflow:x:1009930000:1009930000::/usr/local/airflow:/sbin/nologin" >> /etc/passwd
+
 RUN chmod g=u /etc/passwd && \
     /usr/libexec/fix-permissions ${AIRFLOW_HOME}
 
