@@ -76,9 +76,9 @@ COPY root /
 # This is very ugly. The three uids below as used in our dev, test and prod, respectively
 # The entrypoint is supposed to add the line in /etc/passwd as needed,
 # but the kubernetes executor seems to override the entrypoint
-RUN echo "airflow:x:1009900000:1009900000::/usr/local/airflow:/sbin/nologin" >> /etc/passwd
-RUN echo "airflow:x:1009960000:1009960000::/usr/local/airflow:/sbin/nologin" >> /etc/passwd
-RUN echo "airflow:x:1009930000:1009930000::/usr/local/airflow:/sbin/nologin" >> /etc/passwd
+RUN echo "airflow-dev:x:1009900000:1009900000:::/sbin/nologin" >> /etc/passwd
+RUN echo "airflow-test:x:1009960000:1009960000:::/sbin/nologin" >> /etc/passwd
+RUN echo "airflow-prod:x:1009930000:1009930000:::/sbin/nologin" >> /etc/passwd
 
 RUN useradd -ms /bin/bash -d ${AIRFLOW_HOME} --uid ${USER_ID} airflow
 RUN chown -R airflow: ${AIRFLOW_HOME}
