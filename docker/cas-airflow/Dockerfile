@@ -3,9 +3,7 @@
 # adapted from https://github.com/puckel/docker-airflow
 # VERSION 1.10.10
 
-
 FROM python:3.7-slim-buster
-LABEL io.openshift.s2i.assemble-user="26"
 
 # Never prompt the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
